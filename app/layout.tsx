@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import '@/assets/styles/globals.css';
+import { APP_DESCRIPTION, APP_NAME, SERVER_URL } from '@/lib/constants.';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -8,8 +9,12 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'NextShop',
-  description: 'A modern e-commerce platform built with Next.js',
+  title: {
+    default: APP_NAME,
+    template: `%s | ${APP_NAME}`,
+  },
+  description: APP_DESCRIPTION,
+  metadataBase: new URL(SERVER_URL),
 };
 
 export default function RootLayout({
@@ -20,7 +25,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} antialiased`}>
-        {' '}
         <link rel="icon" href="/favicon.ico" />
         {children}
       </body>
