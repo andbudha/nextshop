@@ -1,9 +1,7 @@
 import ProductList from '@/components/shared/product/product-list';
-import sampleData from '@/db/sample-data';
+import sampleData from '@/db/my-data';
 
 const Home = () => {
-  console.log('sampleData', sampleData);
-
   return (
     <>
       <ProductList
