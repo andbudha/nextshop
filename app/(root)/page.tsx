@@ -4,10 +4,19 @@ import { LATEST_PRODUCTS_LIMIT } from '@/lib/constants';
 
 const Home = async () => {
   const latestProducts = await getLatestProducts();
+
+  //Converting both price&rating from decimal to string
+  const products = latestProducts.map((product) => {
+    return {
+      ...product,
+      price: product.price.toString(),
+      rating: product.rating.toString(),
+    };
+  });
   return (
     <>
       <ProductList
-        data={latestProducts}
+        data={products}
         title="Newest Arrivals"
         limit={LATEST_PRODUCTS_LIMIT}
       />
