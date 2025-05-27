@@ -15,6 +15,21 @@ export const mySampleData = {
       banner: 'banner-one.jpeg',
     },
     {
+      name: 'Level Five- OLYMP WHITE',
+      slug: 'olymp-white-level-five',
+      category: "Men's Dress Shirts",
+      description: 'Olymp White - OLYMP LEVEL FIVE SHIRT',
+      images: ['/images/products/7-1.jpeg', '/images/products/7-2.jpeg'],
+      price: 50.99,
+      brand: 'OLYMP',
+      rating: 4.4,
+      numReviews: 5,
+      stock: 1,
+      isFeatured: true,
+      banner: null,
+    },
+
+    {
       name: 'Desert Sky - TOMMY HILFIGER',
       slug: 'tommy-hilfiger-desert-sky-s/s-shirt',
       category: "Men's Dress Shirts",
@@ -70,6 +85,21 @@ export const mySampleData = {
       isFeatured: true,
       banner: null,
     },
+    {
+      name: 'Level Five- OLYMP BLEU',
+      slug: 'olymp-bleu-level-five',
+      category: "Men's Dress Shirts",
+      description: 'Olymp Bleu - OLYMP LEVEL FIVE SHIRT',
+      images: ['/images/products/8-1.jpeg', '/images/products/8-2.jpeg'],
+      price: 35.9,
+      brand: 'OLYMP ',
+      rating: 4.6,
+      numReviews: 8,
+      stock: 11,
+      isFeatured: true,
+      banner: null,
+    },
+
     {
       name: 'Aerean Sea- TOMMY HILFIGER',
       slug: 'tommy-hilfiger-aerean-sea-flex-poplin-rf-shirt',
