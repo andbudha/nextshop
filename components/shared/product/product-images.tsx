@@ -4,9 +4,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 const ProductImages = ({ images }: { images: string[] }) => {
-  console.log(images);
   const [currentImage, setCurrentImage] = useState(0);
-
   return (
     <div className="space-y-6">
       <Image
