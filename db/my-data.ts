@@ -1,3 +1,5 @@
+import { hashSync } from 'bcrypt';
+
 export const mySampleData = {
   products: [
     {
@@ -113,6 +115,20 @@ export const mySampleData = {
       stock: 13,
       isFeatured: true,
       banner: null,
+    },
+  ],
+  users: [
+    {
+      name: 'Andrei',
+      email: 'andrei@bartov.com',
+      password: hashSync('123456', 10),
+      role: 'admin',
+    },
+    {
+      name: 'Delia',
+      email: 'delia@bartov.com',
+      password: hashSync('123456', 10),
+      role: 'user',
     },
   ],
 };
