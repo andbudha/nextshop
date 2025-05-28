@@ -2,7 +2,7 @@ export const mySampleData = {
   products: [
     {
       name: 'Sweet Blue - TOMMY HILFIGER',
-      slug: 'tommy-hilfiger-sweet-blue-s/s-shirt',
+      slug: 'tommy-hilfiger-sweet-blue-s-s-shirt',
       category: "Men's Dress Shirts",
       description: 'Sweet Blue - TOMMY HILFIGER S/S SHIRT',
       images: ['/images/products/1-1.jpeg', '/images/products/1-2.jpeg'],
@@ -24,14 +24,14 @@ export const mySampleData = {
       brand: 'OLYMP',
       rating: 4.4,
       numReviews: 5,
-      stock: 1,
+      stock: 0,
       isFeatured: true,
       banner: null,
     },
 
     {
       name: 'Desert Sky - TOMMY HILFIGER',
-      slug: 'tommy-hilfiger-desert-sky-s/s-shirt',
+      slug: 'tommy-hilfiger-desert-sky-s-s-shirt',
       category: "Men's Dress Shirts",
       description: 'Desert Sky - TOMMY HILFIGER S/S SHIRT',
       images: ['/images/products/2-1.jpeg', '/images/products/2-2.jpeg'],
@@ -45,7 +45,7 @@ export const mySampleData = {
     },
     {
       name: 'Optic White - TOMMY HILFIGER',
-      slug: 'tommy-hilfiger-optic-white-s/s-shirt',
+      slug: 'tommy-hilfiger-optic-white-s-s-shirt',
       category: "Men's Dress Shirts",
       description: 'Optic White - TOMMY HILFIGER S/S SHIRT',
       images: ['/images/products/3-1.jpeg', '/images/products/3-2.jpeg'],
@@ -67,7 +67,7 @@ export const mySampleData = {
       brand: 'TOMMY HILFIGER',
       rating: 4.5,
       numReviews: 8,
-      stock: 2,
+      stock: 0,
       isFeatured: true,
       banner: 'banner-one.jpeg',
     },
