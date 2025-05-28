@@ -7,7 +7,7 @@ import Image from 'next/image';
 const NotFound = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <div className="flex flex-col items-center justify-center p-6 w-1/3 rounded-lg shadow-md text-center">
+      <div className="flex flex-col items-center justify-center p-6 rounded-lg shadow-md text-center sm:w-1/2 md:w-1/3 lg:w-1/4">
         <Image
           src={logo}
           height={50}
