@@ -8,8 +8,9 @@ import {
 import { APP_NAME } from '@/lib/constants';
 import Image from 'next/image';
 import Link from 'next/link';
+import CredentialsSignInForm from './credentials-signin-form';
 
-const SignIn = () => {
+const SignInPage = () => {
   return (
     <div className="w-full max-w-md mx-auto">
       <Card>
@@ -28,10 +29,12 @@ const SignIn = () => {
             Sign In To Your Account
           </CardDescription>
         </CardHeader>
-        <CardContent>Form Here</CardContent>
+        <CardContent className="space-y-4">
+          <CredentialsSignInForm />
+        </CardContent>
       </Card>
     </div>
   );
 };
 
-export default SignIn;
+export default SignInPage;
