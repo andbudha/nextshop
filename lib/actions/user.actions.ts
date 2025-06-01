@@ -4,6 +4,7 @@ import { signIn, signOut } from '@/auth';
 import { isRedirectError } from 'next/dist/client/components/redirect-error';
 import { prisma } from '../../db/prisma';
 import { hashSync } from 'bcrypt-ts-edge';
+import { formatError } from '../utils';
 //sign in with credentials
 export async function signInWithCredentials(
   prevState: unknown,
@@ -60,7 +61,7 @@ export async function signUpUser(prevState: unknown, formData: FormData) {
     }
     return {
       success: false,
-      message: 'Failed to sign up. Please try again.',
+      message: formatError(error) || 'An error occurred during sign up',
     };
   }
 }
