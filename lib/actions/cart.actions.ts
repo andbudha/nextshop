@@ -1,12 +1,35 @@
 'use server';
 import { cookies } from 'next/headers';
 import { CartItem } from '@/types';
-import { convertToPlainObject, formatError } from '../utils';
+import {
+  convertToPlainObject,
+  formatError,
+  roundToTwoDecimalPlaces,
+} from '../utils';
 import { auth } from '@/auth';
 import { prisma } from '@/db/prisma';
-import { cartItemSchema } from '../validators';
+import { cartItemSchema, insertCartSchema } from '../validators';
+import { revalidatePath } from 'next/cache';
+import { Prisma } from '@prisma/client';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+//calculate cart prices
+const calcPrice = (items: CartItem[]) => {
+  const itemsPrice = roundToTwoDecimalPlaces(
+    items.reduce((acc, item) => acc + Number(item.price) * item.quantity, 0)
+  );
+  const shippingPrice = roundToTwoDecimalPlaces(itemsPrice > 100 ? 0 : 10);
+  const taxtPrice = roundToTwoDecimalPlaces(itemsPrice * 0.15);
+  const totalPrice = roundToTwoDecimalPlaces(
+    itemsPrice + shippingPrice + taxtPrice
+  );
+  return {
+    itemsPrice: itemsPrice.toFixed(2),
+    shippingPrice: shippingPrice.toFixed(2),
+    taxPrice: taxtPrice.toFixed(2),
+    totalPrice: totalPrice.toFixed(2),
+  };
+};
+
 export async function addItemToCart(data: CartItem) {
   try {
     //check for cart cookie
@@ -18,7 +41,7 @@ export async function addItemToCart(data: CartItem) {
     const userId = session?.user?.id ? (session.user.id as string) : undefined;
 
     //get cart
-    const cart = await getMyCart;
+    const cart = await getMyCart();
 
     //pars and validate
     const item = cartItemSchema.parse(data);
@@ -27,18 +50,66 @@ export async function addItemToCart(data: CartItem) {
     const product = await prisma.product.findFirst({
       where: { id: item.productId },
     });
-
-    console.log({
-      userId: userId,
-      sessionCartId: sessionCartId,
-      itemAdded: item,
-      productFound: product,
-    });
-
-    return {
-      success: true,
-      message: 'Item added to cart',
-    };
+    //if product not found throw error
+    if (!product) {
+      throw new Error('Product not found');
+    }
+    //if there is no cart, create one
+    if (!cart) {
+      const newCart = insertCartSchema.parse({
+        userId: userId,
+        items: [item],
+        sessionCartId: sessionCartId,
+        ...calcPrice([item]),
+      });
+      //add cart to db
+      await prisma.cart.create({
+        data: newCart,
+      });
+      //revalidate product page
+      revalidatePath(`/products/${product.slug}`);
+      return {
+        success: true,
+        message: `${product.name} added to cart`,
+      };
+    } else {
+      //check if item is already in the cart
+      const existingItem = (cart.items as CartItem[]).find(
+        (x) => x.productId === item.productId
+      );
+      if (existingItem) {
+        //check stock
+        if (product.stock < existingItem.quantity + 1) {
+          throw new Error('Not enough stock available');
+        }
+        //increase quantity
+        (cart.items as CartItem[]).find(
+          (x) => x.productId === item.productId
+        )!.quantity = existingItem.quantity + 1;
+      } else {
+        //if item is not in the cart
+        //check stock
+        if (product.stock < 1) throw new Error('Not enough stock available');
+        //add item to cart
+        cart.items.push(item);
+      }
+      //save to db
+      await prisma.cart.update({
+        where: { id: cart.id },
+        data: {
+          items: cart.items as Prisma.CartUpdateitemsInput[],
+          ...calcPrice(cart.items as CartItem[]),
+        },
+      });
+      //revalidate product page
+      revalidatePath(`/products/${product.slug}`);
+      return {
+        success: true,
+        message: `${product.name} ${
+          existingItem ? 'updated in' : 'added to'
+        } cart`,
+      };
+    }
   } catch (error) {
     return {
       success: false,
@@ -55,7 +126,6 @@ export async function getMyCart() {
   const session = await auth();
   //if userid not found set it to undefined without throwing an error
   const userId = session?.user?.id ? (session.user.id as string) : undefined;
-  console.log({ userId: userId, sessionCartId: sessionCartId });
   //get user cart from data base
   const cart = await prisma.cart.findFirst({
     where: userId ? { userId: userId } : { sessionCartId: sessionCartId },
