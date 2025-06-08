@@ -5,18 +5,18 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-//Convert prisma object to JS object
+//convert prisma object to JS object
 export function convertToPlainObject<T>(value: T): T {
   return JSON.parse(JSON.stringify(value));
 }
 
-//Format number wih decimal places
+//format number wih decimal places
 export function formatNumberWithDecimal(value: number): string {
   const [int, decimal] = value.toString().split('.');
   return decimal ? `${int}.${decimal.padEnd(2, '0')}` : `${int}.00`;
 }
 
-//Format errors
+//format errors
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function formatError(error: any) {
   if (error.name === 'ZodError') {
@@ -46,7 +46,7 @@ export async function formatError(error: any) {
   }
 }
 
-//Round a number to two decimal places
+//round a number to two decimal places
 export function roundToTwoDecimalPlaces(value: number | string) {
   if (typeof value === 'number') {
     return Math.round((value + Number.EPSILON) * 100) / 100;
@@ -54,5 +54,23 @@ export function roundToTwoDecimalPlaces(value: number | string) {
     return Math.round((Number(value) + Number.EPSILON) * 100) / 100;
   } else {
     throw new Error('Value must be a number or a string');
+  }
+}
+
+//currency formatter
+const CURRENCY_FORMATTER = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  minimumFractionDigits: 2,
+});
+
+//format currency using the formatter
+export function formatCurrency(amount: number | string | null) {
+  if (typeof amount === 'number') {
+    return CURRENCY_FORMATTER.format(amount);
+  } else if (typeof amount === 'string') {
+    return CURRENCY_FORMATTER.format(Number(amount));
+  } else {
+    return 'NaN';
   }
 }
