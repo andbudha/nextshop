@@ -6,6 +6,7 @@ import { getUserById } from '@/lib/actions/user.actions';
 import ShippingAddressForm from './shiping-address-form';
 import { ShippingAddress } from '@/types';
 import CheckoutSteps from '@/components/shared/checkout-steps';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Shipping Address',
@@ -16,7 +17,18 @@ const ShippingAddressPage = async () => {
   if (!cart || cart.items.length === 0) redirect('/cart');
   const session = await auth();
   const userId = session?.user?.id;
-  if (!userId) throw new Error('User not authenticated. No user ID found.');
+  if (!userId) {
+    if (!userId) {
+      return (
+        <div>
+          <Link href={'/sign-in'} className="text-orange-500">
+            Sign In
+          </Link>{' '}
+          to continue, please.
+        </div>
+      );
+    }
+  }
   const user = await getUserById(userId);
 
   return (
