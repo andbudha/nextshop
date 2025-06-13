@@ -17,6 +17,7 @@ import Image from 'next/image';
 
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+import PlaceOrderForm from './place-order-form';
 
 export const metadata = {
   title: 'Place Order',
@@ -105,7 +106,7 @@ const PlaceOrderPage = async () => {
                         </Link>
                       </TableCell>
                       <TableCell className="text-right">
-                        <span className="px-4">{item.qty}</span>
+                        <span className="px-4">{item.quantity}</span>
                       </TableCell>
                       <TableCell className="text-right">
                         <span className="px-2">{item.price}</span>
@@ -136,6 +137,7 @@ const PlaceOrderPage = async () => {
                 <div>Total</div>
                 <div>{formatCurrency(cart.totalPrice)}</div>
               </div>
+              <PlaceOrderForm />
             </CardContent>
           </Card>
         </div>

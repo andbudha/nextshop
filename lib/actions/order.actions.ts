@@ -66,6 +66,7 @@ export async function createOrder() {
         await tx.orderItem.create({
           data: {
             ...item,
+            qty: item.quantity,
             price: item.price,
             orderId: insertedOrder.id,
           },
