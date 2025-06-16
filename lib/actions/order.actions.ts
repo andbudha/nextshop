@@ -43,6 +43,10 @@ export async function createOrder() {
         redirectTo: '/payment-method',
       };
     }
+    console.log('User address:', user.address);
+    console.log('User cart:', cart);
+    console.log('User payment method:', user.paymentMethod);
+    console.log('User id:', user.id);
 
     //create order object
     const order = insertOrderSchema.parse({
@@ -54,6 +58,7 @@ export async function createOrder() {
       taxPrice: cart.taxPrice,
       totalPrice: cart.totalPrice,
     });
+    console.log('Order:::', order);
 
     //prisma transaction use to create order and order items at the same time in database
     const insertedOrderId = await prisma.$transaction(async (tx) => {
@@ -66,7 +71,6 @@ export async function createOrder() {
         await tx.orderItem.create({
           data: {
             ...item,
-            qty: item.quantity,
             price: item.price,
             orderId: insertedOrder.id,
           },

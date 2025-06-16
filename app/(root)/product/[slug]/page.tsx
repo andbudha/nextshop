@@ -76,7 +76,7 @@ const ProductDetailsPage = async (props: {
                       name: product.name,
                       price: product.price,
                       image: product.images[0],
-                      quantity: 1,
+                      qty: 1,
                       slug: product.slug,
                     }}
                     cart={cart}
