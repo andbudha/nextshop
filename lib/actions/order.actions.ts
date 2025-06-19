@@ -51,7 +51,7 @@ export async function createOrder() {
     //create order object
     const order = insertOrderSchema.parse({
       userId: user.id,
-      shipingAddress: user.address,
+      shippingAddress: user.address,
       paymentMethod: user.paymentMethod,
       itemsPrice: cart.itemsPrice,
       shippingPrice: cart.shippingPrice,
