@@ -111,7 +111,7 @@ const OrderDetailsTable = ({ order }: { order: Order }) => {
           </Card>
         </div>
         <div>
-          <Card className="w-full ">
+          <Card className="w-full">
             <CardContent className="p-4 gap-4 space-y-4">
               <div className="flex justify-between">
                 <div>Items</div>
