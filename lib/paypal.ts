@@ -5,6 +5,7 @@ export const paypal = {
   createOrder: async function createOrder(price: number) {
     const accesToken = await generateAccessToken();
     const url = `${base}/v2/checkout/orders`;
+
     const response = await fetch(url, {
       method: 'POST',
       headers: {

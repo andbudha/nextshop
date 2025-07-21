@@ -45,10 +45,6 @@ export async function createOrder() {
         redirectTo: '/payment-method',
       };
     }
-    console.log('User address:', user.address);
-    console.log('User cart:', cart);
-    console.log('User payment method:', user.paymentMethod);
-    console.log('User id:', user.id);
 
     //create order object
     const order = insertOrderSchema.parse({
@@ -164,10 +160,9 @@ export async function createPaypalOrder(orderId: string) {
 }
 
 //approve paypal order and update to paid
-
 export async function approvePaypalOrder(
   orderId: string,
-  data: { orderId: string }
+  data: { orderID: string }
 ) {
   try {
     const order = await prisma.order.findFirst({
@@ -178,7 +173,7 @@ export async function approvePaypalOrder(
 
     if (!order) throw new Error('Order not found');
 
-    const captureData = await paypal.capturePayment(data.orderId);
+    const captureData = await paypal.capturePayment(data.orderID);
     if (
       !captureData ||
       captureData.id !== (order.paymentResult as PaymentResult)?.id ||
@@ -194,7 +189,7 @@ export async function approvePaypalOrder(
         status: captureData.status,
         email_address: captureData.payer.email_address,
         pricePaid:
-          captureData.purchase_units[0]?.payments?.captures[0]?.amount.value,
+          captureData.purchase_units[0]?.payments?.captures[0]?.amount?.value,
       },
     });
 
@@ -217,7 +212,7 @@ async function updateOrderToPaid({
   paymentResult,
 }: {
   orderId: string;
-  paymentResult: PaymentResult;
+  paymentResult?: PaymentResult;
 }) {
   //get order from db
   const order = await prisma.order.findFirst({
@@ -241,7 +236,7 @@ async function updateOrderToPaid({
         },
         data: {
           stock: {
-            decrement: item.qty,
+            increment: -item.qty,
           },
         },
       });
@@ -259,7 +254,7 @@ async function updateOrderToPaid({
     });
   });
   //get updated order after transaction
-  const updateOrder = await prisma.order.findFirst({
+  const updatedOrder = await prisma.order.findFirst({
     where: {
       id: orderId,
     },
@@ -269,5 +264,5 @@ async function updateOrderToPaid({
     },
   });
 
-  if (!updateOrder) throw new Error('Order not found');
+  if (!updatedOrder) throw new Error('Order not found');
 }
