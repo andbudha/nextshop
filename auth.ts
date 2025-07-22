@@ -6,7 +6,6 @@ import { compareSync } from 'bcrypt-ts-edge';
 import type { NextAuthConfig } from 'next-auth';
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-
 export const config = {
   pages: {
     signIn: '/sign-in',
@@ -101,7 +100,7 @@ export const config = {
       return token;
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    authorized({ request }: any) {
+    authorized({ request, auth }: any) {
       //array of regex patterns of paths we want to protect
       const protectedPaths = [
         /\/shipping-address/,
