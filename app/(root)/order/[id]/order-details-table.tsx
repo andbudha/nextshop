@@ -71,7 +71,7 @@ const OrderDetailsTable = ({
     return res.data;
   };
 
-  const handleApprovePayPalOrder = async (data: { orderID: string }) => {
+  const handleApprovePaypalOrder = async (data: { orderID: string }) => {
     const res = await approvePaypalOrder(order.id, data);
 
     toast({
@@ -188,7 +188,7 @@ const OrderDetailsTable = ({
                     <PrintLoadingState />
                     <PayPalButtons
                       createOrder={handleCreatePaypalOrder}
-                      onApprove={handleApprovePayPalOrder}
+                      onApprove={handleApprovePaypalOrder}
                       fundingSource={FUNDING.PAYPAL}
                     />
                   </PayPalScriptProvider>
