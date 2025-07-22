@@ -23,3 +23,6 @@ export const PAYMENT_METHODS = process.env.NEXT_PUBLIC_PAYMENT_METHODS
   : ['PaypPal', 'Stripe', 'CashOnDelivery'];
 
 export const DEFAULT_PAYMENT_METHOD = PAYMENT_METHODS[0] || 'PaypPal';
+
+export const ORDERS_PER_PAGE =
+  Number(process.env.NEXT_PUBLIC_ORDERS_PER_PAGE) || 5;
