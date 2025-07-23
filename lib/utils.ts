@@ -119,3 +119,18 @@ export const formatDateTime = (dateString: Date) => {
     timeOnly: formattedTime,
   };
 };
+
+//Build the pagination links
+export function buildUrlQuery({
+  params,
+  key,
+  value,
+}: {
+  params: string;
+  key: string;
+  value: string;
+}) {
+  const searchParams = new URLSearchParams(params);
+  searchParams.set(key, value);
+  return `?${searchParams.toString()}`;
+}
