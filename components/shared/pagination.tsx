@@ -12,8 +12,6 @@ const Pagination = ({ page, totalPages, urlParamName }: PaginationProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  console.log(searchParams);
-
   const handlePageClick = (btnType: 'next' | 'prev') => {
     const pageValue = btnType === 'next' ? Number(page) + 1 : Number(page) - 1;
     const newUrl = buildUrlQuery({
