@@ -1,8 +1,88 @@
 import { requireAdmin } from '@/lib/auth-guard';
+import { auth } from '@/auth';
+import { Metadata } from 'next';
+import { getAllOrders } from '@/lib/actions/order.actions';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import { formatCurrency, formatDateTime, formatId } from '@/lib/utils';
+import Pagination from '@/components/shared/pagination';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
-const AdminOrdersPage = async () => {
+export const metadata: Metadata = {
+  title: 'Admin Orders',
+};
+const AdminOrdersPage = async (props: {
+  searchParams: Promise<{ page: string }>;
+}) => {
   await requireAdmin();
-  return <>AdminOrdersPage</>;
+
+  const { page = '1' } = await props.searchParams;
+  console.log(page);
+
+  const session = await auth();
+  if (session?.user.role !== 'admin')
+    throw new Error('User is not authorized!');
+
+  const orders = await getAllOrders({ page: Number(page) });
+
+  return (
+    <div className="space-y-2">
+      <h2 className="h2-bold">Orders</h2>
+      <div className="overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Order ID</TableHead>
+              <TableHead>Date</TableHead>
+              <TableHead>Total</TableHead>
+              <TableHead>Paid</TableHead>
+              <TableHead>Delived</TableHead>
+              <TableHead>Details</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {orders.data.map((order) => (
+              <TableRow key={order.id}>
+                <TableCell>{formatId(order.id)}</TableCell>
+                <TableCell>
+                  {formatDateTime(order.createdAt).dateTime}
+                </TableCell>
+                <TableCell>{formatCurrency(order.totalPrice)}</TableCell>
+                <TableCell>
+                  {order.isPaid && order.paidAt
+                    ? formatDateTime(order.paidAt).dateTime
+                    : 'No'}
+                </TableCell>
+                <TableCell>
+                  {order.isDelivered && order.deliveredAt
+                    ? formatDateTime(order.deliveredAt).dateTime
+                    : 'No'}
+                </TableCell>
+                <TableCell>
+                  <Button asChild variant={'outline'} size={'sm'}>
+                    <Link href={`/order/${order.id}`}>Details</Link>
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        {orders.totalPages > 1 && (
+          <Pagination
+            page={Number(page) || 1}
+            totalPages={orders?.totalPages}
+          />
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default AdminOrdersPage;
