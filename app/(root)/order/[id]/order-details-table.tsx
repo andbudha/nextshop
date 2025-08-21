@@ -23,15 +23,21 @@ import {
 import {
   createPaypalOrder,
   approvePaypalOrder,
+  updateOrderToPaidCOD,
+  updateOrderToDelivered,
 } from '@/lib/actions/order.actions';
 import { useToast } from '@/hooks/use-toast';
+import { useTransition } from 'react';
+import { Button } from '@/components/ui/button';
 
 const OrderDetailsTable = ({
   order,
   paypalClientId,
+  isAdmin,
 }: {
   order: Order;
   paypalClientId: string;
+  isAdmin: boolean;
 }) => {
   const {
     orderItems,
@@ -80,6 +86,50 @@ const OrderDetailsTable = ({
     });
   };
 
+  const MarkAsPaidButton = () => {
+    const [isPending, startTransition] = useTransition();
+    const { toast } = useToast();
+    return (
+      <Button
+        size={'sm'}
+        type="button"
+        disabled={isPending}
+        onClick={() =>
+          startTransition(async () => {
+            const res = await updateOrderToPaidCOD(order.id);
+            toast({
+              variant: res.success ? 'default' : 'destructive',
+              description: res.message,
+            });
+          })
+        }
+      >
+        {isPending ? 'Processing...' : 'Mark As Paid'}
+      </Button>
+    );
+  };
+  const MarkAsDeliveredButton = () => {
+    const [isPending, startTransition] = useTransition();
+    const { toast } = useToast();
+    return (
+      <Button
+        size={'sm'}
+        type="button"
+        disabled={isPending}
+        onClick={() =>
+          startTransition(async () => {
+            const res = await updateOrderToDelivered(order.id);
+            toast({
+              variant: res.success ? 'default' : 'destructive',
+              description: res.message,
+            });
+          })
+        }
+      >
+        {isPending ? 'Processing...' : 'Mark As Delivered'}
+      </Button>
+    );
+  };
   return (
     <>
       <h1 className="py-4 text-2xl">Order {formatId(order.id)}</h1>
@@ -162,8 +212,8 @@ const OrderDetailsTable = ({
             </CardContent>
           </Card>
         </div>
-        <div>
-          <Card className="w-full">
+        <div className="w-full">
+          <Card className="w-full overflow-x-auto">
             <CardContent className="p-4 gap-4 space-y-4">
               <div className="flex justify-between">
                 <div>Items</div>
@@ -194,6 +244,13 @@ const OrderDetailsTable = ({
                   </PayPalScriptProvider>
                 </div>
               )}
+              {/* Cash On Delivery */}
+              <div className="flex flex-row justify-between ">
+                {isAdmin && !isPaid && paymentMethod === 'CashOnDelivery' && (
+                  <MarkAsPaidButton />
+                )}
+                {isAdmin && !isDelivered && <MarkAsDeliveredButton />}
+              </div>
             </CardContent>
           </Card>
         </div>
