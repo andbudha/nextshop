@@ -26,3 +26,6 @@ export const DEFAULT_PAYMENT_METHOD = PAYMENT_METHODS[0] || 'PaypPal';
 
 export const ORDERS_PER_PAGE =
   Number(process.env.NEXT_PUBLIC_ORDERS_PER_PAGE) || 5;
+
+export const PRODUCTS_PER_PAGE =
+  Number(process.env.NEXT_PUBLIC_PRODUCTS_PER_PAGE) || 5;
