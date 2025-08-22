@@ -29,3 +29,18 @@ export const ORDERS_PER_PAGE =
 
 export const PRODUCTS_PER_PAGE =
   Number(process.env.NEXT_PUBLIC_PRODUCTS_PER_PAGE) || 5;
+
+export const productDefaultValues = {
+  name: '',
+  slug: '',
+  images: [],
+  category: '',
+  brand: '',
+  description: '',
+  price: 0,
+  stock: 0,
+  rating: 0,
+  numReviews: 0,
+  isFeatured: false,
+  banner: null,
+};
