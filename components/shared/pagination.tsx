@@ -33,6 +33,9 @@ const Pagination = ({ page, totalPages, urlParamName }: PaginationProps) => {
       >
         Previous
       </Button>
+      <div className="flex items-center font-semibold">
+        {page} of {totalPages}
+      </div>
       <Button
         disabled={Number(page) >= totalPages}
         size={'lg'}
