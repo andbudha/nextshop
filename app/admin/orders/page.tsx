@@ -25,7 +25,6 @@ const AdminOrdersPage = async (props: {
   await requireAdmin();
 
   const { page = '1' } = await props.searchParams;
-  console.log(page);
 
   const session = await auth();
   if (session?.user.role !== 'admin')

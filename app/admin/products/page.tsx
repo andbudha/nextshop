@@ -1,4 +1,4 @@
-import { getAllProducts } from '@/lib/actions/product.actions';
+import { deleteProduct, getAllProducts } from '@/lib/actions/product.actions';
 import { requireAdmin } from '@/lib/auth-guard';
 import Link from 'next/link';
 import { formatCurrency, formatId } from '@/lib/utils';
@@ -12,11 +12,19 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import Pagination from '@/components/shared/pagination';
+import { Metadata } from 'next';
+import { auth } from '@/auth';
+import DeleteDialog from '@/components/shared/delete-dialog';
 
+export const metadata: Metadata = {
+  title: 'Admin Products',
+};
 const AdminProductsPage = async (props: {
   searchParams: Promise<{ page: string; query: string; category: string }>;
 }) => {
   await requireAdmin();
+  const session = await auth();
+  if (session?.user.role !== 'admin') throw new Error('Unauthorized');
   const searchParams = await props.searchParams;
   const page = Number(searchParams.page) || 1;
   const searchText = searchParams.query || '';
@@ -63,11 +71,7 @@ const AdminProductsPage = async (props: {
                 <Button asChild variant={'outline'} size={'sm'}>
                   <Link href={`/admin/products/${product.id}`}>Edit</Link>
                 </Button>
-              </TableCell>
-              <TableCell>
-                <Button variant={'destructive'} size={'sm'}>
-                  Delete
-                </Button>
+                <DeleteDialog id={product.id} action={deleteProduct} />
               </TableCell>
             </TableRow>
           ))}
