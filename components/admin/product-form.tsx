@@ -21,7 +21,10 @@ import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { Textarea } from '../ui/textarea';
 import { createProduct, updateProduct } from '@/lib/actions/product.actions';
-
+import { Card, CardContent } from '../ui/card';
+import Image from 'next/image';
+import { UploadButton } from '@uploadthing/react';
+import { OurFileRouter } from '@/app/api/uploadthing/core';
 const ProductForm = ({
   type,
   product,
@@ -79,6 +82,9 @@ const ProductForm = ({
       }
     }
   };
+
+  const images = form.watch('images');
+
   return (
     <Form {...form}>
       <form
@@ -233,7 +239,51 @@ const ProductForm = ({
             )}
           />
         </div>
-        <div className="upload-field ">{/* Images */}</div>
+        <div className="upload-field ">
+          {/* Images */}
+          <FormField
+            control={form.control}
+            name="images"
+            render={() => (
+              <FormItem className="w-full">
+                <FormLabel>Images</FormLabel>
+                <Card>
+                  <CardContent className="space-y-2 mt-2 min-h-48">
+                    <div className="flex-start space-x-2">
+                      {images?.map((image, index) => (
+                        <Image
+                          src={image}
+                          alt="Product Image"
+                          key={index}
+                          className="w-20 h-20 object-cover object-center rounded-sm"
+                          width={100}
+                          height={100}
+                        />
+                      ))}
+                      <FormControl>
+                        <UploadButton<OurFileRouter, 'imageUploader'>
+                          endpoint="imageUploader"
+                          onClientUploadComplete={(res: { url: string }[]) => {
+                            form.setValue('images', [...images, res[0].url]);
+                          }}
+                          onUploadError={(error: Error) => {
+                            toast({
+                              title: 'Error',
+                              description: error.message,
+                              variant: 'destructive',
+                            });
+                          }}
+                          className="border pb-2 rounded-md bg-gray-50 h-[60px]"
+                        />
+                      </FormControl>
+                    </div>
+                  </CardContent>
+                </Card>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
         <div className="upload-field">{/* isFeatured */}</div>
         <div>
           {/* Description */}
