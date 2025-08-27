@@ -400,7 +400,7 @@ export async function updateOrderToPaidCOD(orderId: string) {
     revalidatePath(`/order/${orderId}`);
     return {
       success: true,
-      message: 'Order marked as paid!!',
+      message: 'Order marked as paid!',
     };
   } catch (error) {
     return {
@@ -432,7 +432,7 @@ export async function updateOrderToDelivered(orderId: string) {
     revalidatePath(`/order/${orderId}`);
     return {
       success: true,
-      message: 'Order marked as delivered!!',
+      message: 'Order marked as delivered!',
     };
   } catch (error) {
     return {
