@@ -88,9 +88,6 @@ const ProductForm = ({
   const isFeatured = form.watch('isFeatured');
   const banner = form.watch('banner');
 
-  console.log('Is Featured', isFeatured);
-  console.log('Is Banner', banner);
-
   return (
     <Form {...form}>
       <form
@@ -372,7 +369,9 @@ const ProductForm = ({
             disabled={form.formState.isSubmitting}
             className="col-span-2 w-full"
           >
-            {form.formState.isSubmitting ? 'Submitting...' : 'Create Product'}
+            {form.formState.isSubmitting
+              ? 'Submitting...'
+              : `${type === 'update' ? 'Update' : 'Create'} Product`}
           </Button>
         </div>
       </form>

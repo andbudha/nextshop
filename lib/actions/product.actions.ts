@@ -98,6 +98,16 @@ export async function createProduct(data: z.infer<typeof insertProductSchema>) {
   }
 }
 
+//get product by id
+export async function getProductById(productId: string) {
+  const product = await prisma.product.findFirst({
+    where: {
+      id: productId,
+    },
+  });
+  return convertToPlainObject(product);
+}
+
 //update product
 export async function updateProduct(data: z.infer<typeof updateProductSchema>) {
   try {
