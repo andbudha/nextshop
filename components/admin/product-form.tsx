@@ -25,6 +25,7 @@ import { Card, CardContent } from '../ui/card';
 import Image from 'next/image';
 import { UploadButton } from '@uploadthing/react';
 import { OurFileRouter } from '@/app/api/uploadthing/core';
+import { Checkbox } from '../ui/checkbox';
 const ProductForm = ({
   type,
   product,
@@ -84,6 +85,11 @@ const ProductForm = ({
   };
 
   const images = form.watch('images');
+  const isFeatured = form.watch('isFeatured');
+  const banner = form.watch('banner');
+
+  console.log('Is Featured', isFeatured);
+  console.log('Is Banner', banner);
 
   return (
     <Form {...form}>
@@ -273,7 +279,7 @@ const ProductForm = ({
                               variant: 'destructive',
                             });
                           }}
-                          className="border pb-2 rounded-md bg-gray-50 h-[60px]"
+                          className="border pb-2 rounded-md bg-gray-50 h-[60px] w-[150px] flex items-center justify-center"
                         />
                       </FormControl>
                     </div>
@@ -284,7 +290,54 @@ const ProductForm = ({
             )}
           />
         </div>
-        <div className="upload-field">{/* isFeatured */}</div>
+        <div className="upload-field">
+          {/* isFeatured */}
+          Featured Product
+          <Card>
+            <CardContent className="space-y-2 mt-2">
+              <FormField
+                control={form.control}
+                name="isFeatured"
+                render={({ field }) => (
+                  <FormItem className="space-x-2 items-center">
+                    <FormControl>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                    <FormLabel>Is Featured?</FormLabel>
+                  </FormItem>
+                )}
+              />
+              {isFeatured && banner && (
+                <Image
+                  src={banner}
+                  alt="Product Banner"
+                  className="w-full h-48 object-cover object-center rounded-sm"
+                  width={1920}
+                  height={680}
+                />
+              )}
+              {isFeatured && !banner && (
+                <UploadButton<OurFileRouter, 'imageUploader'>
+                  endpoint="imageUploader"
+                  onClientUploadComplete={(res: { url: string }[]) => {
+                    form.setValue('banner', res[0].url);
+                  }}
+                  onUploadError={(error: Error) => {
+                    toast({
+                      title: 'Error',
+                      description: error.message,
+                      variant: 'destructive',
+                    });
+                  }}
+                  className="border pb-2 rounded-md bg-gray-50 h-[60px] w-[150px]"
+                />
+              )}
+            </CardContent>
+          </Card>
+        </div>
         <div>
           {/* Description */}
           <FormField
