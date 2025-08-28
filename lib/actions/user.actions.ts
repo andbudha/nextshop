@@ -13,6 +13,7 @@ import { formatError } from '../utils';
 import { ShippingAddress } from '@/types';
 import z from 'zod';
 import { USERS_PER_PAGE } from '../constants';
+import { revalidatePath } from 'next/cache';
 
 //sign in with credentials
 export async function signInWithCredentials(
@@ -190,6 +191,35 @@ export async function getAllUsers({
     return {
       success: false,
       message: formatError(error) || 'An error occurred while getting users',
+    };
+  }
+}
+
+//delete user by id
+export async function deleteUser(userId: string) {
+  try {
+    const existingUser = await prisma.user.findFirst({
+      where: {
+        id: userId,
+      },
+    });
+    if (!existingUser) {
+      throw new Error('User not found!');
+    }
+    await prisma.user.delete({
+      where: {
+        id: userId,
+      },
+    });
+    revalidatePath('/admin/users');
+    return {
+      success: true,
+      message: 'User deleted successfully!',
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: formatError(error),
     };
   }
 }
