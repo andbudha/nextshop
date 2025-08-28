@@ -12,6 +12,7 @@ import { hashSync } from 'bcrypt-ts-edge';
 import { formatError } from '../utils';
 import { ShippingAddress } from '@/types';
 import z from 'zod';
+import { USERS_PER_PAGE } from '../constants';
 
 //sign in with credentials
 export async function signInWithCredentials(
@@ -158,6 +159,37 @@ export async function updateUserProfile(user: { name: string; email: string }) {
     return {
       success: false,
       message: formatError(error) || 'An error occurred while updating profile',
+    };
+  }
+}
+
+//get all users
+export async function getAllUsers({
+  limit = USERS_PER_PAGE,
+  page,
+}: {
+  limit?: number;
+  page: number;
+}) {
+  try {
+    const data = await prisma.user.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: limit,
+      skip: (page - 1) * limit,
+    });
+    if (!data) throw new Error('Users not found');
+    const dataCount = await prisma.user.count();
+
+    return {
+      data,
+      totalPages: Math.ceil(dataCount / limit),
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: formatError(error) || 'An error occurred while getting users',
     };
   }
 }
