@@ -36,8 +36,6 @@ const AdminProductsPage = async (props: {
     category,
   });
 
-  console.log('All Products', products);
-
   return (
     <div className="space-y-2">
       <div className="flex-between">

@@ -30,7 +30,8 @@ export const ORDERS_PER_PAGE =
 export const PRODUCTS_PER_PAGE =
   Number(process.env.NEXT_PUBLIC_PRODUCTS_PER_PAGE) || 5;
 
-export const USERS_PER_PAGE = Number(process.env.NEXT_USERS_PER_PAGE) || 5;
+export const USERS_PER_PAGE =
+  Number(process.env.NEXT_PUBLIC_USERS_PER_PAGE) || 5;
 
 export const productDefaultValues = {
   name: '',
