@@ -67,8 +67,11 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
     <>
       <h1 className="py-4 h2-bold">Shopping Cart</h1>
       {!cart || cart.items.length === 0 ? (
-        <div>
-          Cart is empty. <Link href={'/'}>Shop Now</Link>
+        <div className="flex fex-col items-center justify-center h-[calc(100vh-300px)] w-full">
+          <h1 className="h3-bold">Cart is empty</h1>
+          <Button className="m-2 w-[120px]" asChild>
+            <Link href={'/'}>Shop Now</Link>
+          </Button>
         </div>
       ) : (
         <div className="grid md:grid-cols-4 md:gap-5">
