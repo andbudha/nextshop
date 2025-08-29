@@ -47,3 +47,5 @@ export const productDefaultValues = {
   isFeatured: false,
   banner: null,
 };
+
+export const USER_ROLES = process.env.NEXT_PUBLIC_USER_ROLES?.split(', ');
