@@ -168,3 +168,17 @@ export async function getAllCategories() {
 
   return categoriesWithCount;
 }
+
+//get featured products
+export async function getFeaturedProducts() {
+  const data = await prisma.product.findMany({
+    where: {
+      isFeatured: true,
+    },
+    take: 4,
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+  return convertToPlainObject(data);
+}
