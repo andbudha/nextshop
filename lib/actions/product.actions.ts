@@ -155,16 +155,16 @@ export async function updateProduct(data: z.infer<typeof updateProductSchema>) {
 
 //get all categories
 export async function getAllCategories() {
-  try {
-    const data = await prisma.product.groupBy({
-      by: ['category'],
-      _count: true,
-    });
-    return data;
-  } catch (error) {
-    return {
-      success: false,
-      message: formatError(error),
-    };
-  }
+  const data = await prisma.product.groupBy({
+    by: ['category'],
+    _count: {
+      _all: true,
+    },
+  });
+  const categoriesWithCount = data.map((item) => ({
+    category: item.category,
+    count: item._count._all,
+  }));
+
+  return categoriesWithCount;
 }
