@@ -1,10 +1,15 @@
+import ProductCarousel from '@/components/shared/product/product-carousel';
 import ProductList from '@/components/shared/product/product-list';
-import { getLatestProducts } from '@/lib/actions/product.actions';
+import {
+  getFeaturedProducts,
+  getLatestProducts,
+} from '@/lib/actions/product.actions';
 import { LATEST_PRODUCTS_LIMIT } from '@/lib/constants';
 import { Product } from '@/types';
 
 const Home = async () => {
   const latestProducts = await getLatestProducts();
+  const featuredProducts = await getFeaturedProducts();
 
   //Converting both price&rating from decimal to string
   const products = latestProducts.map((product: Product) => {
@@ -14,8 +19,12 @@ const Home = async () => {
       rating: product.rating.toString(),
     };
   });
+
   return (
     <>
+      {featuredProducts.length > 0 && (
+        <ProductCarousel data={featuredProducts} />
+      )}
       <ProductList
         data={products}
         title="Newest Arrivals"
