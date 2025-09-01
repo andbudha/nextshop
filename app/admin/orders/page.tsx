@@ -20,26 +20,39 @@ export const metadata: Metadata = {
   title: 'Admin Orders',
 };
 const AdminOrdersPage = async (props: {
-  searchParams: Promise<{ page: string }>;
+  searchParams: Promise<{ page: string; query: string }>;
 }) => {
   await requireAdmin();
 
-  const { page = '1' } = await props.searchParams;
+  const { page = '1', query: searchText } = await props.searchParams;
 
   const session = await auth();
   if (session?.user.role !== 'admin')
     throw new Error('User is not authorized!');
 
-  const orders = await getAllOrders({ page: Number(page) });
+  const orders = await getAllOrders({ page: Number(page), query: searchText });
 
   return (
     <div className="space-y-2">
-      <h2 className="h2-bold">Orders</h2>
+      <div className="flex flex-col items-start gap-3">
+        <h1 className="h2-bold">Orders</h1>
+        {searchText && (
+          <span className="text-muted-foreground">
+            Filtered by: <i>&quot;{searchText}&quot;</i>
+            <Link href={`/admin/orders`} className="ml-2">
+              <Button variant={'outline'} size={'sm'}>
+                Remove Filter
+              </Button>
+            </Link>
+          </span>
+        )}
+      </div>
       <div className="overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>Order ID</TableHead>
+              <TableHead>BUYER</TableHead>
               <TableHead>Date</TableHead>
               <TableHead>Total</TableHead>
               <TableHead>Paid</TableHead>
@@ -51,6 +64,8 @@ const AdminOrdersPage = async (props: {
             {orders.data.map((order) => (
               <TableRow key={order.id}>
                 <TableCell>{formatId(order.id)}</TableCell>
+                <TableCell>{order.user.name}</TableCell>
+
                 <TableCell>
                   {formatDateTime(order.createdAt).dateTime}
                 </TableCell>
