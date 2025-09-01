@@ -15,6 +15,7 @@ import { ShippingAddress } from '@/types';
 import z from 'zod';
 import { USERS_PER_PAGE } from '../constants';
 import { revalidatePath } from 'next/cache';
+import { Prisma } from '@prisma/client';
 
 //sign in with credentials
 export async function signInWithCredentials(
@@ -153,6 +154,7 @@ export async function updateUserProfile(user: { name: string; email: string }) {
       where: { id: currentUser.id },
       data: { name: user.name, email: user.email },
     });
+    revalidatePath('/user/profile');
     return {
       success: true,
       message: 'User profile updated successfully',
@@ -169,12 +171,26 @@ export async function updateUserProfile(user: { name: string; email: string }) {
 export async function getAllUsers({
   limit = USERS_PER_PAGE,
   page,
+  query,
 }: {
   limit?: number;
   page: number;
+  query: string;
 }) {
   try {
+    const queryFilter: Prisma.UserWhereInput =
+      query && query !== 'all'
+        ? {
+            name: {
+              contains: query,
+              mode: 'insensitive',
+            } as Prisma.StringFilter,
+          }
+        : {};
     const data = await prisma.user.findMany({
+      where: {
+        ...queryFilter,
+      },
       orderBy: {
         createdAt: 'desc',
       },
