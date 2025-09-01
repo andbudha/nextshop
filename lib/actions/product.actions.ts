@@ -5,6 +5,7 @@ import { convertToPlainObject, formatError } from '../utils';
 import { revalidatePath } from 'next/cache';
 import { insertProductSchema, updateProductSchema } from '../validators';
 import z from 'zod';
+import { Prisma } from '@prisma/client';
 
 //Get latest products from the database
 export async function getLatestProducts() {
@@ -31,13 +32,28 @@ export async function getProductBySlug(slug: string) {
 export async function getAllProducts({
   limit = PRODUCTS_PER_PAGE,
   page,
+  query,
 }: {
   query: string;
   limit?: number;
   page: number;
   category?: string;
 }) {
+  // Query filter
+  const queryFilter: Prisma.ProductWhereInput =
+    query && query !== 'all'
+      ? {
+          name: {
+            contains: query,
+            mode: 'insensitive',
+          } as Prisma.StringFilter,
+        }
+      : {};
+
   const data = await prisma.product.findMany({
+    where: {
+      ...queryFilter,
+    },
     skip: (page - 1) * limit,
     take: limit,
     orderBy: { createdAt: 'desc' },
