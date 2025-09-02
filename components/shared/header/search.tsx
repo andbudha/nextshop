@@ -32,7 +32,7 @@ const Search = async () => {
           </SelectContent>
         </Select>
         <Input
-          name="query"
+          name="q"
           type="text"
           placeholder="Search..."
           className="md:w-[100px] lg:w-[250px]"
