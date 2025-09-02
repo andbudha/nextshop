@@ -1,6 +1,11 @@
 import ProductCard from '@/components/shared/product/product-card';
-import { getAllProducts } from '@/lib/actions/product.actions';
+import {
+  getAllCategories,
+  getAllProducts,
+} from '@/lib/actions/product.actions';
+import { priceFilters } from '@/lib/constants';
 import { Product } from '@/types';
+import Link from 'next/link';
 
 const SearchPage = async (pros: {
   searchParams: Promise<{
@@ -52,9 +57,70 @@ const SearchPage = async (pros: {
     page: Number(page),
   });
 
+  const categories = await getAllCategories();
+
   return (
     <div className="grid md:grid-cols-5 md:gap-5">
-      <div className="filter-links">{/* FILTERS */}</div>
+      <div className="filter-links">
+        {/* Categories */}
+        <div className="text-xl mb-2 mt-3 font-bold">Categories</div>
+        <div>
+          <ul className="space-y-2">
+            <li>
+              <Link
+                href={getFilterUrl({ c: 'all' })}
+                className={`${
+                  (category === 'all' || category === '') && 'font-bold'
+                }`}
+              >
+                Any
+              </Link>
+            </li>
+            {categories.map((x: { category: string; count: number }) => {
+              return (
+                <>
+                  <li key={x.category}>
+                    <Link
+                      href={getFilterUrl({ c: x.category })}
+                      className={`${x.category === category && 'font-bold'}`}
+                    >
+                      {x.category}
+                    </Link>
+                  </li>
+                </>
+              );
+            })}
+          </ul>
+        </div>
+        {/* Price */}
+        <div className="text-xl mb-2 mt-3 font-bold">Price</div>
+        <div>
+          <ul className="space-y-2">
+            <li>
+              <Link
+                href={getFilterUrl({ p: 'all' })}
+                className={`${price === 'all' && 'font-bold'}`}
+              >
+                Any
+              </Link>
+            </li>
+            {priceFilters.map((x: { price: string; value: string }) => {
+              return (
+                <>
+                  <li key={x.value}>
+                    <Link
+                      href={getFilterUrl({ p: x.value })}
+                      className={`${x.value === price && 'font-bold'}`}
+                    >
+                      {x.price}
+                    </Link>
+                  </li>
+                </>
+              );
+            })}
+          </ul>
+        </div>
+      </div>
 
       <div className="space-y-4 md:col-span-4">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">

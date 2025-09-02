@@ -49,3 +49,12 @@ export const productDefaultValues = {
 };
 
 export const USER_ROLES = process.env.NEXT_PUBLIC_USER_ROLES?.split(', ');
+
+export const priceFilters = [
+  { price: '$1 to $50', value: '1-50' },
+  { price: '$51 to $100', value: '51-100' },
+  { price: '$101 to $200', value: '101-200' },
+  { price: '$201 to $300', value: '201-300' },
+  { price: '$301 to $400', value: '301-400' },
+  { price: '$401 to $500', value: '401-500' },
+];
