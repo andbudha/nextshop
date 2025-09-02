@@ -3,7 +3,7 @@ import {
   getAllCategories,
   getAllProducts,
 } from '@/lib/actions/product.actions';
-import { priceFilters } from '@/lib/constants';
+import { priceFilters, ratingFilters } from '@/lib/constants';
 import { Product } from '@/types';
 import Link from 'next/link';
 
@@ -63,7 +63,7 @@ const SearchPage = async (pros: {
     <div className="grid md:grid-cols-5 md:gap-5">
       <div className="filter-links">
         {/* Categories */}
-        <div className="text-xl mb-2 mt-3 font-bold">Categories</div>
+        <div className="text-xl mb-2 mt-2 font-bold">Categories</div>
         <div>
           <ul className="space-y-2">
             <li>
@@ -93,7 +93,7 @@ const SearchPage = async (pros: {
           </ul>
         </div>
         {/* Price */}
-        <div className="text-xl mb-2 mt-3 font-bold">Price</div>
+        <div className="text-xl mb-2 mt-5 font-bold">Price</div>
         <div>
           <ul className="space-y-2">
             <li>
@@ -113,6 +113,34 @@ const SearchPage = async (pros: {
                       className={`${x.value === price && 'font-bold'}`}
                     >
                       {x.price}
+                    </Link>
+                  </li>
+                </>
+              );
+            })}
+          </ul>
+        </div>
+        {/* Customer Rating */}
+        <div className="text-xl mb-2 mt-3 font-bold">Customer Ratings</div>
+        <div>
+          <ul className="space-y-2">
+            <li>
+              <Link
+                href={getFilterUrl({ r: 'all' })}
+                className={`${rating === 'all' && 'font-bold'}`}
+              >
+                Any
+              </Link>
+            </li>
+            {ratingFilters.map((x: { rating: string; value: string }) => {
+              return (
+                <>
+                  <li key={x.value}>
+                    <Link
+                      href={getFilterUrl({ r: x.value })}
+                      className={`${x.value === rating && 'font-bold'}`}
+                    >
+                      {x.rating}
                     </Link>
                   </li>
                 </>

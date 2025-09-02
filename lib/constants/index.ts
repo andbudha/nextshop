@@ -58,3 +58,10 @@ export const priceFilters = [
   { price: '$301 to $400', value: '301-400' },
   { price: '$401 to $500', value: '401-500' },
 ];
+
+export const ratingFilters = [
+  { rating: '4 stars & up', value: '4' },
+  { rating: '3 stars & up', value: '3' },
+  { rating: '2 stars & up', value: '2' },
+  { rating: '1 star & up', value: '1' },
+];
