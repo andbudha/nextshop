@@ -21,7 +21,28 @@ const SearchPage = async (pros: {
     page = '1',
   } = await pros.searchParams;
 
-  console.log('params:::', { q, category, price, sort, page });
+  const getFilterUrl = ({
+    c,
+    s,
+    p,
+    r,
+    pg,
+  }: {
+    c?: string;
+    s?: string;
+    p?: string;
+    r?: string;
+    pg?: string;
+  }) => {
+    const params = { q, category, price, rating, sort, page };
+    if (c) params.category = c;
+    if (s) params.sort = s;
+    if (p) params.price = p;
+    if (r) params.rating = r;
+    if (pg) params.page = pg;
+    return `/search?${new URLSearchParams(params).toString()}`;
+  };
+
   const products = await getAllProducts({
     query: q,
     category,
@@ -34,6 +55,7 @@ const SearchPage = async (pros: {
   return (
     <div className="grid md:grid-cols-5 md:gap-5">
       <div className="filter-links">{/* FILTERS */}</div>
+
       <div className="space-y-4 md:col-span-4">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {products.data.length === 0 && (
