@@ -13,7 +13,8 @@ const ProductCard = ({ product }: { product: Product }) => {
             src={product.images[0]}
             alt={product.name}
             height={300}
-            width={300}
+            width={240}
+            className="w-[240px] h-[300px] object-cover  mt-3"
           />
         </Link>
       </CardHeader>

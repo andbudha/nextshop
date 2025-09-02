@@ -1,5 +1,6 @@
 import ProductCarousel from '@/components/shared/product/product-carousel';
 import ProductList from '@/components/shared/product/product-list';
+import ViewAllProducts from '@/components/view-all-products';
 import {
   getFeaturedProducts,
   getLatestProducts,
@@ -30,6 +31,7 @@ const Home = async () => {
         title="Newest Arrivals"
         limit={LATEST_PRODUCTS_LIMIT}
       />
+      <ViewAllProducts />
     </>
   );
 };
