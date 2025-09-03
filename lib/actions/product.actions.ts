@@ -34,7 +34,7 @@ export async function getAllProducts({
   page,
   query,
   category,
-  // sort,
+  sort,
   price,
   rating,
 }: {
@@ -87,7 +87,14 @@ export async function getAllProducts({
     },
     skip: (page - 1) * limit,
     take: limit,
-    orderBy: { createdAt: 'desc' },
+    orderBy:
+      sort === 'lowest price'
+        ? { price: 'asc' }
+        : sort === 'highest price'
+        ? { price: 'desc' }
+        : sort === 'rating'
+        ? { rating: 'desc' }
+        : { createdAt: 'desc' },
   });
   const dataCount = await prisma.product.count();
   return {
