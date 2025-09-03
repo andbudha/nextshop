@@ -4,7 +4,7 @@ import {
   getAllCategories,
   getAllProducts,
 } from '@/lib/actions/product.actions';
-import { priceFilters, ratingFilters } from '@/lib/constants';
+import { priceFilters, ratingFilters, sortOptions } from '@/lib/constants';
 import { Product } from '@/types';
 import Link from 'next/link';
 
@@ -64,15 +64,16 @@ const SearchPage = async (pros: {
     <div className="grid md:grid-cols-5 md:gap-5">
       <div className="filter-links">
         {/* Categories */}
-        <div className="text-xl mb-2 mt-2 font-bold">Categories</div>
+        <div className="text-xl mb-2 mt-2 font-bold">Categories:</div>
         <div>
           <ul className="space-y-2">
             <li key="all-categories">
               <Link
                 href={getFilterUrl({ c: 'all' })}
                 className={`${
-                  (category === 'all' || category === '') && 'font-bold'
-                }`}
+                  (category === 'all' || category === '') &&
+                  'font-bold text-primary'
+                } text-muted-foreground`}
               >
                 Any
               </Link>
@@ -83,7 +84,9 @@ const SearchPage = async (pros: {
                   <li key={x.category}>
                     <Link
                       href={getFilterUrl({ c: x.category })}
-                      className={`${x.category === category && 'font-bold'}`}
+                      className={`${
+                        x.category === category && 'font-bold text-primary'
+                      } text-muted-foreground`}
                     >
                       {x.category}
                     </Link>
@@ -94,13 +97,15 @@ const SearchPage = async (pros: {
           </ul>
         </div>
         {/* Price */}
-        <div className="text-xl mb-2 mt-5 font-bold">Price</div>
+        <div className="text-xl mb-2 mt-5 font-bold">Price:</div>
         <div>
           <ul className="space-y-2">
             <li key="all-prices">
               <Link
                 href={getFilterUrl({ p: 'all' })}
-                className={`${price === 'all' && 'font-bold'}`}
+                className={`${
+                  price === 'all' && 'font-bold text-primary'
+                } text-muted-foreground`}
               >
                 Any
               </Link>
@@ -111,7 +116,9 @@ const SearchPage = async (pros: {
                   <li key={x.value}>
                     <Link
                       href={getFilterUrl({ p: x.value })}
-                      className={`${x.value === price && 'font-bold'}`}
+                      className={`${
+                        x.value === price && 'font-bold text-primary'
+                      } text-muted-foreground`}
                     >
                       {x.price}
                     </Link>
@@ -122,13 +129,15 @@ const SearchPage = async (pros: {
           </ul>
         </div>
         {/* Customer Rating */}
-        <div className="text-xl mb-2 mt-3 font-bold">Ratings</div>
+        <div className="text-xl mb-2 mt-3 font-bold">Ratings:</div>
         <div>
           <ul className="space-y-2">
             <li key="all-ratings">
               <Link
                 href={getFilterUrl({ r: 'all' })}
-                className={`${rating === 'all' && 'font-bold'}`}
+                className={`${
+                  rating === 'all' && 'font-bold text-primary'
+                } text-muted-foreground`}
               >
                 Any
               </Link>
@@ -139,9 +148,34 @@ const SearchPage = async (pros: {
                   <li key={x.value}>
                     <Link
                       href={getFilterUrl({ r: x.value })}
-                      className={`${x.value === rating && 'font-bold'}`}
+                      className={`${
+                        x.value === rating && 'font-bold text-primary'
+                      } text-muted-foreground`}
                     >
                       {x.rating}
+                    </Link>
+                  </li>
+                </>
+              );
+            })}
+          </ul>
+        </div>
+        {/* Sorting Options*/}
+        <div className="text-xl mb-2 mt-3 font-bold ">Sort by:</div>
+        <div>
+          <ul className="space-y-2">
+            {sortOptions.map((s: string) => {
+              return (
+                <>
+                  <li key={s}>
+                    <Link
+                      key={s}
+                      href={getFilterUrl({ s })}
+                      className={` ${
+                        s === sort && 'font-bold text-primary'
+                      } text-muted-foreground`}
+                    >
+                      {s}
                     </Link>
                   </li>
                 </>

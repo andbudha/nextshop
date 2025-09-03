@@ -65,3 +65,10 @@ export const ratingFilters = [
   { rating: '2 stars & up', value: '2' },
   { rating: '1 star & up', value: '1' },
 ];
+
+export const sortOptions = [
+  'newest arrivals',
+  'lowest price',
+  'highest price',
+  'rating',
+];
