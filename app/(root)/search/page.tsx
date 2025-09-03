@@ -1,4 +1,5 @@
 import ProductCard from '@/components/shared/product/product-card';
+import { Button } from '@/components/ui/button';
 import {
   getAllCategories,
   getAllProducts,
@@ -66,7 +67,7 @@ const SearchPage = async (pros: {
         <div className="text-xl mb-2 mt-2 font-bold">Categories</div>
         <div>
           <ul className="space-y-2">
-            <li>
+            <li key="all-categories">
               <Link
                 href={getFilterUrl({ c: 'all' })}
                 className={`${
@@ -96,7 +97,7 @@ const SearchPage = async (pros: {
         <div className="text-xl mb-2 mt-5 font-bold">Price</div>
         <div>
           <ul className="space-y-2">
-            <li>
+            <li key="all-prices">
               <Link
                 href={getFilterUrl({ p: 'all' })}
                 className={`${price === 'all' && 'font-bold'}`}
@@ -121,10 +122,10 @@ const SearchPage = async (pros: {
           </ul>
         </div>
         {/* Customer Rating */}
-        <div className="text-xl mb-2 mt-3 font-bold">Customer Ratings</div>
+        <div className="text-xl mb-2 mt-3 font-bold">Ratings</div>
         <div>
           <ul className="space-y-2">
-            <li>
+            <li key="all-ratings">
               <Link
                 href={getFilterUrl({ r: 'all' })}
                 className={`${rating === 'all' && 'font-bold'}`}
@@ -149,8 +150,46 @@ const SearchPage = async (pros: {
           </ul>
         </div>
       </div>
-
       <div className="space-y-4 md:col-span-4">
+        <div className="flex-between flex-col my-4 md:flex-row ">
+          <div className="flex flex-col w-full space-y-2 sm:flex-row sm:items-center sm:space-x-2 sm:space-y-0">
+            {(q !== 'all' && q !== '') ||
+            (category !== 'all' && category !== '') ||
+            price !== 'all' ||
+            rating !== 'all' ? (
+              <div>
+                <Button asChild variant={'outline'} className="mr-2">
+                  <Link href={'/search'}>Clear Filters</Link>
+                </Button>
+              </div>
+            ) : null}
+            {q !== 'all' && q !== '' && (
+              <div>
+                <span className="text-muted-foreground mr-2">Qeury:</span>
+                <span className="font-bold mr-3">{q}</span>
+              </div>
+            )}
+            {category !== 'all' && category !== '' && (
+              <div>
+                <span className="text-muted-foreground mr-2">Category:</span>
+                <span className="font-bold mr-3">{category}</span>
+              </div>
+            )}
+            {price !== 'all' && price !== '' && (
+              <div>
+                <span className="text-muted-foreground mr-2">Price:</span>
+                <span className="font-bold mr-3">{price}</span>
+              </div>
+            )}
+            {rating !== 'all' && rating !== '' && (
+              <div>
+                <span className="text-muted-foreground mr-2">Rating:</span>
+                <span className="font-bold mr-3">{`${rating} & Up`}</span>
+              </div>
+            )}
+            &nbsp;
+          </div>
+        </div>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {products.data.length === 0 && (
             <div className="h3-bold">No products found</div>
