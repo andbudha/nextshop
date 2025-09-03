@@ -72,3 +72,9 @@ export const sortOptions = [
   'highest price',
   'rating',
 ];
+
+export const reviewFormDefaultValues = {
+  title: '',
+  rating: '0',
+  comment: '',
+};
