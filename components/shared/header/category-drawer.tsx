@@ -12,7 +12,8 @@ import { Menu } from 'lucide-react';
 import Link from 'next/link';
 
 const CategoryDrawer = async () => {
-  const categoies = await getAllCategories();
+  const categories = await getAllCategories();
+
   return (
     <Drawer direction="left">
       <DrawerTrigger asChild>
@@ -24,7 +25,7 @@ const CategoryDrawer = async () => {
         <DrawerHeader>
           <DrawerTitle>Select Category</DrawerTitle>
           <div className="space-y-1 mt-2">
-            {categoies.map((x) => (
+            {categories.map((x) => (
               <div key={x.category}>
                 <Button
                   variant={'ghost'}
@@ -32,7 +33,7 @@ const CategoryDrawer = async () => {
                   asChild
                 >
                   <DrawerClose asChild>
-                    <Link href={`/search?category=${x}`}>
+                    <Link href={`/search?category=${x.category}`}>
                       {x.category} ({x.count})
                     </Link>
                   </DrawerClose>
