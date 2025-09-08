@@ -2,7 +2,7 @@
 
 import { z } from 'zod';
 import { insertReviewSchema } from '../validators';
-import { formatError } from '../utils';
+import { convertToPlainObject, formatError } from '../utils';
 import { auth } from '@/auth';
 import { prisma } from '@/db/prisma';
 import { revalidatePath } from 'next/cache';
@@ -83,4 +83,42 @@ export async function createUpdateReview(
       message: formatError(error) || 'An error occurred while creating review',
     };
   }
+}
+
+//get all reviews for a product
+export async function getReviewsByProductId(productId: string) {
+  const data = await prisma.review.findMany({
+    where: {
+      productId,
+    },
+    include: {
+      user: {
+        select: {
+          name: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+
+  return { data };
+}
+
+//get the review written by the current user
+export async function getMyReviewByProductId({
+  productId,
+}: {
+  productId: string;
+}) {
+  const session = await auth();
+  if (!session) throw new Error('User is not authorized');
+  const data = await prisma.review.findFirst({
+    where: {
+      productId,
+      userId: session.user.id,
+    },
+  });
+  return { data };
 }
