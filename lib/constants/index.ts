@@ -75,6 +75,6 @@ export const sortOptions = [
 
 export const reviewFormDefaultValues = {
   title: '',
-  rating: '0',
+  rating: 0,
   comment: '',
 };
