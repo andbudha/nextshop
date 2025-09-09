@@ -69,7 +69,7 @@ const StripePayment = ({
           size={'lg'}
           disabled={elements === null || stripe === null || isLoading}
         >
-          {isLoading ? 'Loading...' : `$ ${priceInCents} Pay Now`}
+          {isLoading ? 'Purchasing...' : `$ ${priceInCents} Pay Now`}
         </Button>
       </form>
     );
