@@ -78,3 +78,6 @@ export const reviewFormDefaultValues = {
   rating: 0,
   comment: '',
 };
+
+export const EMAIL_SENDER =
+  process.env.NEXT_PUBLIC_EMAIL_SENDER || 'onboarding@resend.dev';
