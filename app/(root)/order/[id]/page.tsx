@@ -2,7 +2,7 @@ import { getOrderById } from '@/lib/actions/order.actions';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import OrderDetailsTable from './order-details-table';
-import { ShippingAddress } from '@/types';
+import { PaymentResult, ShippingAddress } from '@/types';
 import { auth } from '@/auth';
 import Stripe from 'stripe';
 
@@ -41,6 +41,12 @@ const OrderDetailsPage = async (props: { params: Promise<{ id: string }> }) => {
       order={{
         ...order,
         shippingAddress: order.shippingAddress as ShippingAddress,
+        paymentResult: (order.paymentResult as PaymentResult) ?? {
+          id: '',
+          status: '',
+          email_address: '',
+          pricePaid: '',
+        },
       }}
       paypalClientId={process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || 'sb'}
       isAdmin={session?.user?.role === 'admin' || false}
