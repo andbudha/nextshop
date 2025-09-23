@@ -1,3 +1,4 @@
+import IconBoxes from '@/components/icon-boxes';
 import ProductCarousel from '@/components/shared/product/product-carousel';
 import ProductList from '@/components/shared/product/product-list';
 import ViewAllProducts from '@/components/view-all-products';
@@ -32,6 +33,7 @@ const Home = async () => {
         limit={LATEST_PRODUCTS_LIMIT}
       />
       <ViewAllProducts />
+      <IconBoxes />
     </>
   );
 };
