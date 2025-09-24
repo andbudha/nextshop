@@ -260,7 +260,7 @@ const SearchPage = async (pros: {
             &nbsp;
           </div>
         </div>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3 max-h-screen overflow-y-auto">
           {products.data.length === 0 && (
             <div className="h3-bold">No products found</div>
           )}

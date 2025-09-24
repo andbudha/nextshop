@@ -4,7 +4,7 @@ import { Button } from './ui/button';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
-const TARGET_DATE = new Date('2025-10-01T00:00:00');
+const TARGET_DATE = new Date('2027-10-01T00:00:00');
 //function to calculate the remaining time
 const getRemainingTime = (targetDate: Date) => {
   const currentTime = new Date();
@@ -70,7 +70,7 @@ const DealCountdown = () => {
         </div>
         <div className="flex justify-center">
           <Image
-            src={'/images/promo.jpg'}
+            src={'/images/promo.jpeg'}
             alt="promotion"
             width={300}
             height={200}
@@ -86,13 +86,11 @@ const DealCountdown = () => {
         <p>
           Get ready to refresh your wardrobe with our amazing Deal of the Month!
           We are offering a fantastic 40% discount on all spring and summer
-          {/* Display the value of the stat box. */}
-          dresses. Whether you&apos;re looking for a casual sundress or an
-          {/* Display the label of the stat box. */}
-          elegant maxi dress, we have the perfect style for you. Our dresses are
+          shirts. Whether you&apos;re looking for a casual sun shirt or an
+          elegant maxi shirt, we have the perfect style for you. Our shirts are
           crafted from high-quality fabrics, ensuring comfort and style all day
           long. Don&apos;t miss out on this limited-time offer. Shop now and
-          find your new favorite dress at an unbeatable price!
+          find your new favorite shirt at an unbeatable price!
         </p>
         <ul className="grid grid-cols-4">
           <StatBox label="Days" value={time.days} />
@@ -108,10 +106,11 @@ const DealCountdown = () => {
       </div>
       <div className="flex justify-center">
         <Image
-          src={'/images/promo.jpg'}
+          src={'/images/promo.jpeg'}
           alt="promotion"
           width={300}
           height={200}
+          className=" rounded-md"
         />
       </div>
     </section>
