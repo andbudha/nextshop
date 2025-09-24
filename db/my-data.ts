@@ -1,4 +1,4 @@
-import { hashSync } from 'bcrypt';
+import { hashSync } from 'bcrypt-ts-edge';
 
 export const mySampleData = {
   products: [
